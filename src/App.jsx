@@ -13,6 +13,35 @@ import Footer from './components/Footer';
 gsap.registerPlugin(ScrollTrigger);
 
 function App() {
+  // Anti-Inspect & Selection Blocker
+  useEffect(() => {
+    const handleContextMenu = (e) => e.preventDefault();
+    const handleKeyDown = (e) => {
+      // Prevent F12
+      if (e.key === 'F12' || e.keyCode === 123) e.preventDefault();
+      // Prevent Ctrl+Shift+I / Cmd+Option+I
+      if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'I' || e.key === 'i')) e.preventDefault();
+      // Prevent Ctrl+Shift+J / Cmd+Option+J
+      if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'J' || e.key === 'j')) e.preventDefault();
+      // Prevent Ctrl+U / Cmd+U (View Source)
+      if ((e.ctrlKey || e.metaKey) && (e.key === 'U' || e.key === 'u')) e.preventDefault();
+    };
+    const handleDragStart = (e) => e.preventDefault();
+    const handleSelectStart = (e) => e.preventDefault();
+
+    document.addEventListener('contextmenu', handleContextMenu);
+    document.addEventListener('keydown', handleKeyDown);
+    document.addEventListener('dragstart', handleDragStart);
+    document.addEventListener('selectstart', handleSelectStart);
+
+    return () => {
+      document.removeEventListener('contextmenu', handleContextMenu);
+      document.removeEventListener('keydown', handleKeyDown);
+      document.removeEventListener('dragstart', handleDragStart);
+      document.removeEventListener('selectstart', handleSelectStart);
+    };
+  }, []);
+
   useEffect(() => {
     // Refresh ScrollTrigger to ensure pinned elements are perfectly calculated
     const timeout = setTimeout(() => {

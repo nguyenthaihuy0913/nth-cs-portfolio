@@ -182,7 +182,7 @@ const InteractiveBackground = () => {
 
       <div
         ref={cursorRef}
-        className="fixed top-0 left-0 w-5 h-5 bg-cyberCyan rounded-full pointer-events-none z-[9999] -translate-x-1/2 -translate-y-1/2 shadow-[0_0_10px_#00f3ff]"
+        className="fixed top-0 left-0 w-5 h-5 bg-cyberCyan rounded-full pointer-events-none z-[99999] -translate-x-1/2 -translate-y-1/2 shadow-[0_0_10px_#00f3ff]"
         style={{ willChange: 'transform' }}
       />
     </>
