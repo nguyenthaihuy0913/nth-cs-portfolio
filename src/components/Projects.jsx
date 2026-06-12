@@ -104,23 +104,16 @@ const CarouselItem = ({ index, position, rotation, project, groupRef, angleStep 
     const currentWorldAngle = myTheta + groupRef.current.rotation.y;
     const distanceToCenter = Math.abs(currentWorldAngle);
     
-    const scale = Math.max(0.6, 1 - distanceToCenter * 0.4);
+    const scale = Math.max(0.7, 1 - distanceToCenter * 0.3);
     
-    // Fade in much faster (deadzone so it hits opacity 1 earlier)
-    let opacity = 1;
-    if (distanceToCenter > 0.15) {
-      opacity = Math.max(0.05, 1 - (distanceToCenter - 0.15) * 2);
-    }
-
     cardRef.current.style.transform = `scale(${scale})`;
-    cardRef.current.style.opacity = opacity;
+    cardRef.current.style.opacity = 1;
+    cardRef.current.style.filter = 'none';
     
-    // Blur only activates when it's further away
-    if (distanceToCenter > 0.25) {
-      cardRef.current.style.filter = `blur(${(distanceToCenter - 0.25) * 8}px) contrast(1.2)`;
+    // Disable clicks on panels that are not in the center
+    if (distanceToCenter > 0.3) {
       cardRef.current.style.pointerEvents = 'none';
     } else {
-      cardRef.current.style.filter = 'none';
       cardRef.current.style.pointerEvents = 'auto';
     }
   });
