@@ -72,8 +72,8 @@ const Hero = () => {
     <section ref={container} className="relative z-10 w-full min-h-screen flex flex-col md:flex-row items-center px-6 md:px-20 pt-20">
       
       {/* 3D Canvas Background for Hero */}
-      <div className="absolute inset-0 z-0 pointer-events-none opacity-50">
-        <Canvas camera={{ position: [0, 0, 8] }}>
+      <div className="absolute inset-0 z-0 pointer-events-none opacity-50 md:opacity-100">
+        <Canvas camera={{ position: [0, 0, 8] }} dpr={[1, 1.5]} performance={{ min: 0.5 }}>
           <ambientLight intensity={1.5} />
           <directionalLight position={[10, 10, 5]} intensity={2} color="#00f3ff" />
           <directionalLight position={[-10, -10, -5]} intensity={2} color="#b026ff" />
@@ -85,17 +85,17 @@ const Hero = () => {
       <div className="relative z-10 w-full flex flex-col md:flex-row items-center justify-between max-w-7xl mx-auto gap-10">
         
         {/* Left Typography */}
-        <div className="w-full md:w-2/3 text-center md:text-left">
-          <p className="hero-fade text-neonPurple font-mono text-lg md:text-xl mb-4 tracking-[0.2em] uppercase">
+        <div className="w-full md:w-2/3 text-center md:text-left mt-10 md:mt-0">
+          <p className="hero-fade text-neonPurple font-mono text-sm md:text-xl mb-4 tracking-[0.2em] uppercase">
             System Initialized
           </p>
           <h1 
             ref={nameRef} 
-            className="text-6xl md:text-[8rem] font-black tracking-tighter leading-none text-white mb-6 drop-shadow-[0_0_20px_rgba(0,243,255,0.3)]"
+            className="text-5xl md:text-[8rem] font-black tracking-tighter leading-none text-white mb-6 drop-shadow-[0_0_20px_rgba(0,243,255,0.3)]"
           >
             Nguyễn Thái Huy
           </h1>
-          <p className="hero-fade text-xl md:text-2xl text-gray-300 font-light max-w-3xl leading-relaxed mb-10">
+          <p className="hero-fade text-base md:text-2xl text-gray-300 font-light max-w-3xl leading-relaxed mb-10 mx-auto md:mx-0">
             Sinh viên F21 ĐH FPT | Bằng kép <span className="text-cyberCyan font-bold">Computer Science</span> & <span className="text-neonPurple font-bold">Master AI</span>
           </p>
           
@@ -104,7 +104,7 @@ const Hero = () => {
               href="/cv.pdf"
               download
               data-cursor="hover"
-              className="inline-block px-8 py-4 bg-transparent border border-cyberCyan text-cyberCyan font-mono font-bold uppercase tracking-widest relative overflow-hidden group hover:animate-glitch shadow-[0_0_15px_rgba(0,243,255,0.2)] hover:shadow-[0_0_25px_rgba(176,38,255,0.5)] transition-all"
+              className="inline-block px-6 py-3 md:px-8 md:py-4 bg-transparent border border-cyberCyan text-cyberCyan font-mono font-bold uppercase tracking-widest relative overflow-hidden group hover:animate-glitch shadow-[0_0_15px_rgba(0,243,255,0.2)] hover:shadow-[0_0_25px_rgba(176,38,255,0.5)] transition-all text-sm md:text-base"
             >
               <span className="relative z-10 group-hover:text-white transition-colors">Initialize CV</span>
               <div className="absolute inset-0 bg-cyberCyan transform -translate-x-full group-hover:translate-x-0 transition-transform duration-300 ease-out z-0 mix-blend-screen" />
@@ -113,10 +113,10 @@ const Hero = () => {
         </div>
 
         {/* Right Avatar */}
-        <div className="w-full md:w-1/3 flex justify-center mt-10 md:mt-0 hero-fade">
+        <div className="w-full md:w-1/3 flex justify-center mt-12 md:mt-0 hero-fade">
           <div 
             ref={avatarRef} 
-            className="relative cursor-pointer w-64 h-80" 
+            className="relative cursor-pointer w-48 h-64 md:w-64 md:h-80" 
             data-cursor="hover"
             onMouseEnter={() => setIsAvatarHovered(true)}
             onMouseLeave={() => setIsAvatarHovered(false)}

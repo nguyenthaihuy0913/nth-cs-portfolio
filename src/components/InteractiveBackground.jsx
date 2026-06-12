@@ -62,27 +62,41 @@ const InteractiveBackground = () => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
     let width, height;
+    let particleCount = 80;
     
     const resize = () => {
       width = window.innerWidth;
       height = window.innerHeight;
-      canvas.width = width;
-      canvas.height = height;
+      
+      // Cap device pixel ratio for performance
+      const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+      canvas.width = width * dpr;
+      canvas.height = height * dpr;
+      ctx.scale(dpr, dpr);
+      
+      // Reduce particle count on mobile to boost performance
+      particleCount = width < 768 ? 35 : 80;
     };
     resize();
     window.addEventListener('resize', resize);
 
     // Create particles
-    const particleCount = 80;
-    const particles = [];
-    for (let i = 0; i < particleCount; i++) {
-      particles.push({
-        x: Math.random() * width,
-        y: Math.random() * height,
-        vx: (Math.random() - 0.5) * 0.5,
-        vy: (Math.random() - 0.5) * 0.5,
-      });
-    }
+    let particles = [];
+    const initParticles = () => {
+      particles = [];
+      for (let i = 0; i < particleCount; i++) {
+        particles.push({
+          x: Math.random() * width,
+          y: Math.random() * height,
+          vx: (Math.random() - 0.5) * 0.5,
+          vy: (Math.random() - 0.5) * 0.5,
+        });
+      }
+    };
+    initParticles();
+    
+    // Re-init on resize to update count
+    window.addEventListener('resize', initParticles);
 
     const render = () => {
       ctx.clearRect(0, 0, width, height);
@@ -101,7 +115,7 @@ const InteractiveBackground = () => {
         if (p.y > height) p.y = 0;
 
         ctx.beginPath();
-        ctx.arc(p.x, p.y, 1.5, 0, Math.PI * 2);
+        ctx.arc(p.x, p.y, width < 768 ? 1 : 1.5, 0, Math.PI * 2);
         ctx.fill();
 
         // Connect particles
@@ -111,7 +125,8 @@ const InteractiveBackground = () => {
           let dy = p.y - p2.y;
           let dist = Math.sqrt(dx * dx + dy * dy);
 
-          if (dist < 150) {
+          const connectionDistance = width < 768 ? 100 : 150;
+          if (dist < connectionDistance) {
             ctx.beginPath();
             ctx.strokeStyle = `rgba(176, 38, 255, ${0.15 - dist / 1000})`;
             ctx.moveTo(p.x, p.y);
@@ -120,16 +135,18 @@ const InteractiveBackground = () => {
           }
         }
 
-        // Connect to mouse
-        let mdx = p.x - mouseX;
-        let mdy = p.y - mouseY;
-        let mdist = Math.sqrt(mdx * mdx + mdy * mdy);
-        if (mdist < 200) {
-          ctx.beginPath();
-          ctx.strokeStyle = `rgba(0, 243, 255, ${0.3 - mdist / 666})`;
-          ctx.moveTo(p.x, p.y);
-          ctx.lineTo(mouseX, mouseY);
-          ctx.stroke();
+        // Connect to mouse (only on desktop/large screens to save mobile perf)
+        if (width >= 768) {
+          let mdx = p.x - mouseX;
+          let mdy = p.y - mouseY;
+          let mdist = Math.sqrt(mdx * mdx + mdy * mdy);
+          if (mdist < 200) {
+            ctx.beginPath();
+            ctx.strokeStyle = `rgba(0, 243, 255, ${0.3 - mdist / 666})`;
+            ctx.moveTo(p.x, p.y);
+            ctx.lineTo(mouseX, mouseY);
+            ctx.stroke();
+          }
         }
       }
     };
@@ -139,6 +156,7 @@ const InteractiveBackground = () => {
     return () => {
       window.removeEventListener('mousemove', onMouseMove);
       window.removeEventListener('resize', resize);
+      window.removeEventListener('resize', initParticles);
       document.removeEventListener('mouseover', onMouseOver);
       document.removeEventListener('mouseout', onMouseOut);
       gsap.ticker.remove(render);

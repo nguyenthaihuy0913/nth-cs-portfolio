@@ -56,7 +56,7 @@ const About = () => {
           {achievements.map((item, idx) => (
             <div 
               key={idx}
-              className="bento-card p-10 hover:bg-white/[0.05] transition-colors duration-500"
+              className="bento-card p-6 md:p-10 hover:bg-white/[0.05] transition-colors duration-500"
             >
               <h3 className="text-2xl font-bold text-white mb-4">{item.title}</h3>
               <p className="text-lg text-gray-400 leading-relaxed">{item.desc}</p>

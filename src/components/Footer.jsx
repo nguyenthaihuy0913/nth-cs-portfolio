@@ -75,15 +75,15 @@ const MagneticSocial = ({ item }) => {
       target="_blank"
       rel="noreferrer"
       data-cursor="hover"
-      className="flex flex-col items-center justify-center p-8 rounded-3xl border border-glassBorder bg-glassBg backdrop-blur-xl transition-all h-[200px]"
+      className="flex flex-col items-center justify-center p-4 md:p-8 rounded-3xl border border-glassBorder bg-glassBg backdrop-blur-xl transition-all h-[150px] md:h-[200px]"
     >
-      <div ref={iconContentRef} className="flex flex-col items-center gap-4 pointer-events-none">
-        <div style={{ color: item.color }} className="drop-shadow-[0_0_15px_currentColor]">
+      <div ref={iconContentRef} className="flex flex-col items-center gap-3 md:gap-4 pointer-events-none">
+        <div style={{ color: item.color }} className="drop-shadow-[0_0_15px_currentColor] scale-75 md:scale-100">
           {item.icon}
         </div>
         <div className="text-center">
-          <p className="text-sm font-bold text-white mb-1">{item.name}</p>
-          <p className="text-xs font-mono text-gray-400 break-all max-w-[120px]">{item.text}</p>
+          <p className="text-xs md:text-sm font-bold text-white mb-1">{item.name}</p>
+          <p className="text-[10px] md:text-xs font-mono text-gray-400 break-all max-w-[100px] md:max-w-[120px] leading-tight">{item.text}</p>
         </div>
       </div>
     </a>
@@ -110,7 +110,7 @@ const DonateModal = ({ isOpen, onClose }) => {
   return (
     <div 
       ref={modalOverlayRef} 
-      className="fixed inset-0 z-[9999] flex items-center justify-center bg-voidBlack/80 backdrop-blur-md invisible opacity-0"
+      className="fixed inset-0 z-[9999] flex items-center justify-center bg-voidBlack/80 backdrop-blur-md invisible opacity-0 p-4"
     >
       {/* Click overlay to close */}
       <div className="absolute inset-0 cursor-pointer" onClick={onClose}></div>
@@ -118,36 +118,36 @@ const DonateModal = ({ isOpen, onClose }) => {
       {/* Modal Content */}
       <div 
         ref={modalContentRef} 
-        className="relative z-10 w-full max-w-md bg-glassBg border border-cyberCyan/30 shadow-[0_0_50px_rgba(176,38,255,0.2)] rounded-3xl p-8 text-center"
+        className="relative z-10 w-full max-w-md bg-glassBg border border-cyberCyan/30 shadow-[0_0_50px_rgba(176,38,255,0.2)] rounded-3xl p-6 md:p-8 text-center"
       >
         <button 
           onClick={onClose}
           data-cursor="hover"
-          className="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors p-2"
+          className="absolute top-3 right-3 md:top-4 md:right-4 text-gray-400 hover:text-white transition-colors p-2"
         >
-          <FaTimes size={24} />
+          <FaTimes size={20} className="md:w-6 md:h-6" />
         </button>
 
-        <h3 className="text-2xl font-black text-white mb-2 tracking-widest uppercase">
+        <h3 className="text-xl md:text-2xl font-black text-white mb-2 tracking-widest uppercase">
           INITIALIZE <span className="text-neonPurple">SUPPORT</span>
         </h3>
-        <p className="text-gray-300 text-sm mb-8 leading-relaxed">
+        <p className="text-gray-300 text-xs md:text-sm mb-6 md:mb-8 leading-relaxed">
           Cảm ơn bạn đã ủng hộ để mình duy trì server và phát triển thêm nhiều dự án xịn xò hơn! 🚀
         </p>
 
         {/* QR Code Container with Neon Trace */}
         <div className="relative inline-block rounded-2xl overflow-hidden p-1 bg-gradient-to-br from-neonPurple via-voidBlack to-cyberCyan animate-pulse">
-          <div className="bg-voidBlack rounded-xl p-4 relative">
+          <div className="bg-voidBlack rounded-xl p-3 md:p-4 relative">
             <img 
               src="/qr-donate.png" 
               alt="Donate QR Code" 
-              className="w-48 h-48 object-contain rounded-lg relative z-10"
+              className="w-40 h-40 md:w-48 md:h-48 object-contain rounded-lg relative z-10"
               onError={(e) => { e.target.src = 'https://via.placeholder.com/200?text=QR+Code' }}
             />
           </div>
         </div>
         
-        <p className="mt-6 text-xs text-cyberCyan font-mono tracking-widest uppercase opacity-70">
+        <p className="mt-4 md:mt-6 text-[10px] md:text-xs text-cyberCyan font-mono tracking-widest uppercase opacity-70">
           Awaiting Transaction...
         </p>
       </div>
@@ -160,29 +160,29 @@ const Footer = () => {
 
   return (
     <>
-      <footer className="relative w-full py-40 px-6 md:px-12 z-10 border-t border-glassBorder/50 overflow-hidden">
+      <footer className="relative w-full py-24 md:py-40 px-4 md:px-12 z-10 border-t border-glassBorder/50 overflow-hidden">
         
         {/* Background Cyber Glow for Footer */}
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-[300px] bg-neonPurple/10 blur-[150px] pointer-events-none" />
 
         <div className="max-w-7xl mx-auto flex flex-col items-center">
           
-          <h2 className="text-[12vw] md:text-[8vw] font-black leading-none mb-24 text-center tracking-tighter" style={{ WebkitTextStroke: '1px rgba(255,255,255,0.2)', color: 'transparent', backgroundImage: 'linear-gradient(to bottom, #fff, #b026ff)', WebkitBackgroundClip: 'text' }}>
+          <h2 className="text-[15vw] md:text-[8vw] font-black leading-none mb-16 md:mb-24 text-center tracking-tighter" style={{ WebkitTextStroke: '1px rgba(255,255,255,0.2)', color: 'transparent', backgroundImage: 'linear-gradient(to bottom, #fff, #b026ff)', WebkitBackgroundClip: 'text' }}>
             LET'S CONNECT
           </h2>
 
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 w-full max-w-5xl">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6 w-full max-w-5xl">
             {socials.map((item, idx) => (
               <MagneticSocial key={idx} item={item} />
             ))}
           </div>
 
           {/* Donate Button */}
-          <div className="mt-20">
+          <div className="mt-16 md:mt-20 w-full px-4 md:w-auto text-center">
             <button
               onClick={() => setIsModalOpen(true)}
               data-cursor="hover"
-              className="px-10 py-5 bg-transparent border-2 border-neonPurple text-neonPurple font-black uppercase tracking-widest text-lg rounded-full relative overflow-hidden group hover:shadow-[0_0_40px_rgba(176,38,255,0.6)] transition-all duration-300"
+              className="w-full md:w-auto px-6 md:px-10 py-4 md:py-5 bg-transparent border-2 border-neonPurple text-neonPurple font-black uppercase tracking-widest text-sm md:text-lg rounded-full relative overflow-hidden group hover:shadow-[0_0_40px_rgba(176,38,255,0.6)] transition-all duration-300"
             >
               <span className="relative z-10 group-hover:text-white transition-colors duration-300">Support My Server ☕</span>
               <div className="absolute inset-0 bg-neonPurple transform scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-500 ease-out z-0 mix-blend-screen" />

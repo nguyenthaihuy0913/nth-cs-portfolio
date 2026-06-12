@@ -34,11 +34,11 @@ const row2 = [
 const TechItem = ({ item }) => {
   if (item.highlight) {
     return (
-      <div className="flex items-center gap-4 px-10 py-6 mx-4 rounded-3xl border-2 border-neonPurple bg-neonPurple/10 shadow-[0_0_30px_rgba(176,38,255,0.4)] animate-pulse shrink-0">
-        <div className="text-6xl text-neonPurple drop-shadow-[0_0_15px_rgba(176,38,255,0.8)]">
+      <div className="flex items-center gap-2 md:gap-4 px-6 py-4 md:px-10 md:py-6 mx-2 md:mx-4 rounded-3xl border-2 border-neonPurple bg-neonPurple/10 shadow-[0_0_30px_rgba(176,38,255,0.4)] animate-pulse shrink-0">
+        <div className="text-4xl md:text-6xl text-neonPurple drop-shadow-[0_0_15px_rgba(176,38,255,0.8)]">
           {item.icon}
         </div>
-        <span className="text-3xl font-black text-white tracking-widest uppercase drop-shadow-[0_0_10px_rgba(255,255,255,0.5)]">
+        <span className="text-xl md:text-3xl font-black text-white tracking-widest uppercase drop-shadow-[0_0_10px_rgba(255,255,255,0.5)]">
           {item.name}
         </span>
       </div>
@@ -46,11 +46,11 @@ const TechItem = ({ item }) => {
   }
 
   return (
-    <div className="flex items-center gap-3 px-8 py-5 mx-4 rounded-2xl border border-glassBorder bg-glassBg backdrop-blur-md shrink-0 transition-colors hover:border-cyberCyan/50 hover:bg-cyberCyan/5">
-      <div className="text-4xl text-cyberCyan opacity-80">
+    <div className="flex items-center gap-2 md:gap-3 px-5 py-3 md:px-8 md:py-5 mx-2 md:mx-4 rounded-2xl border border-glassBorder bg-glassBg backdrop-blur-md shrink-0 transition-colors hover:border-cyberCyan/50 hover:bg-cyberCyan/5">
+      <div className="text-2xl md:text-4xl text-cyberCyan opacity-80">
         {item.icon}
       </div>
-      <span className="text-xl font-bold text-gray-300 tracking-wider">
+      <span className="text-base md:text-xl font-bold text-gray-300 tracking-wider">
         {item.name}
       </span>
     </div>
