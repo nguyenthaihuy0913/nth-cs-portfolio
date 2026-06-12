@@ -1,0 +1,36 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-voidBlack text-gray-200 overflow-x-hidden antialiased;
+    font-family: 'Inter', sans-serif;
+    cursor: none; /* AI Theme: custom cursor */
+  }
+
+  /* Make sure links don't show default cursor */
+  a, button, input, textarea, select {
+    cursor: none;
+  }
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #050511;
+}
+::-webkit-scrollbar-thumb {
+  background: #333;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #00f3ff;
+}
+
+/* Base styles for Glassmorphism Bento Grids */
+.bento-card {
+  @apply relative overflow-hidden rounded-[2rem] bg-glassBg border border-glassBorder backdrop-blur-xl shadow-[0_0_30px_rgba(0,243,255,0.02)];
+}
