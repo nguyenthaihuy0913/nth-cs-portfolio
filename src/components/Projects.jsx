@@ -44,11 +44,11 @@ const ProjectCard = React.forwardRef(({ project, idx, isMobile }, ref) => {
   return (
     <div 
       ref={ref} 
-      className={`w-full md:w-[450px] bento-card p-5 md:p-8 bg-voidBlack/70 border-2 transition-all duration-300 flex flex-col relative overflow-hidden group backdrop-blur-3xl rounded-3xl ${project.highlight ? 'border-neonPurple shadow-[0_0_50px_rgba(176,38,255,0.4)]' : 'border-cyberCyan/40 shadow-[0_0_30px_rgba(0,243,255,0.15)]'}`}
+      className={`w-full md:w-[380px] bento-card p-4 md:p-6 bg-voidBlack/70 border-2 transition-all duration-300 flex flex-col relative overflow-hidden group backdrop-blur-3xl rounded-2xl ${project.highlight ? 'border-neonPurple shadow-[0_0_40px_rgba(176,38,255,0.4)]' : 'border-cyberCyan/40 shadow-[0_0_20px_rgba(0,243,255,0.15)]'}`}
       style={{ transformOrigin: 'center center' }}
     >
       {/* Tech Scanners overlay */}
-      <div className="absolute top-4 right-5 text-right font-mono text-[9px] text-gray-400 opacity-80 pointer-events-none">
+      <div className="absolute top-3 right-4 text-right font-mono text-[8px] text-gray-400 opacity-80 pointer-events-none">
         <p>SYS_SCAN: <span className="text-cyberCyan font-bold">OK</span></p>
         <p>LATENCY: <span className="text-neonPurple font-bold">{(Math.random() * 0.5 + 0.1).toFixed(2)}ms</span></p>
       </div>
@@ -57,37 +57,37 @@ const ProjectCard = React.forwardRef(({ project, idx, isMobile }, ref) => {
         <div className="absolute inset-0 pointer-events-none overflow-hidden mix-blend-screen">
            <div className="absolute top-[10%] left-[5%] w-1.5 h-1.5 bg-yellow-400 rounded-sm animate-ping opacity-60 shadow-[0_0_5px_#facc15]"></div>
            <div className="absolute bottom-[20%] right-[10%] w-1 h-1 bg-neonPurple rounded-full animate-ping opacity-80 delay-75 shadow-[0_0_5px_#b026ff]"></div>
-           <div className="absolute top-[40%] right-[5%] w-0.5 h-4 bg-cyberCyan animate-pulse opacity-40 shadow-[0_0_5px_#00f3ff]"></div>
+           <div className="absolute top-[40%] right-[5%] w-0.5 h-3 bg-cyberCyan animate-pulse opacity-40 shadow-[0_0_5px_#00f3ff]"></div>
            <div className="absolute top-[80%] left-[20%] w-1 h-1 bg-yellow-400 rounded-sm animate-pulse opacity-40 shadow-[0_0_5px_#facc15] delay-150"></div>
         </div>
       )}
 
       {project.highlight && (
-        <div className="bg-neonPurple text-white px-3 py-1 rounded-full text-[9px] font-bold tracking-widest uppercase self-start mb-3 z-10 shadow-[0_0_15px_rgba(176,38,255,0.6)]">
+        <div className="bg-neonPurple text-white px-3 py-1 rounded-full text-[8px] font-bold tracking-widest uppercase self-start mb-3 z-10 shadow-[0_0_15px_rgba(176,38,255,0.6)]">
           Currently Developing
         </div>
       )}
       
-      <div className="mb-1 font-mono text-xs tracking-widest text-cyberCyan z-10">
+      <div className="mb-1 font-mono text-[10px] tracking-widest text-cyberCyan z-10">
         MODULE_0{idx + 1}
       </div>
       
-      <h3 className="text-xl md:text-3xl font-black mb-3 text-white drop-shadow-[0_0_15px_rgba(255,255,255,0.3)] z-10">
+      <h3 className="text-lg md:text-2xl font-black mb-2 text-white drop-shadow-[0_0_15px_rgba(255,255,255,0.3)] z-10">
         {project.title}
       </h3>
       
-      <p className="text-xs md:text-sm text-gray-300 leading-relaxed mb-6 z-10">
+      <p className="text-[10px] md:text-xs text-gray-300 leading-relaxed mb-5 z-10">
         {project.desc}
       </p>
 
-      <div className="mt-auto pt-4 border-t border-glassBorder/50 flex flex-col sm:flex-row items-center gap-3 z-10">
+      <div className="mt-auto pt-3 border-t border-glassBorder/50 flex flex-col sm:flex-row items-center gap-2 z-10">
         <a 
           href={project.github} 
           target="_blank" 
           rel="noreferrer"
-          className="flex items-center gap-2 px-5 py-2.5 rounded-full border border-cyberCyan/50 bg-cyberCyan/10 text-white hover:bg-cyberCyan hover:text-voidBlack transition-all backdrop-blur-md font-mono text-[10px] uppercase tracking-widest w-full justify-center sm:w-auto shadow-[0_0_15px_rgba(0,243,255,0.2)] hover:shadow-[0_0_25px_rgba(0,243,255,0.5)]"
+          className="flex items-center gap-2 px-4 py-2 rounded-full border border-cyberCyan/50 bg-cyberCyan/10 text-white hover:bg-cyberCyan hover:text-voidBlack transition-all backdrop-blur-md font-mono text-[9px] uppercase tracking-widest w-full justify-center sm:w-auto shadow-[0_0_15px_rgba(0,243,255,0.2)] hover:shadow-[0_0_25px_rgba(0,243,255,0.5)]"
         >
-          <FaGithub size={16} /> Access Repository
+          <FaGithub size={14} /> Access Repository
         </a>
       </div>
     </div>
@@ -105,13 +105,19 @@ const CarouselItem = ({ index, position, rotation, project, groupRef, angleStep 
     const distanceToCenter = Math.abs(currentWorldAngle);
     
     const scale = Math.max(0.6, 1 - distanceToCenter * 0.4);
-    const opacity = Math.max(0.05, 1 - distanceToCenter * 1.5);
+    
+    // Fade in much faster (deadzone so it hits opacity 1 earlier)
+    let opacity = 1;
+    if (distanceToCenter > 0.15) {
+      opacity = Math.max(0.05, 1 - (distanceToCenter - 0.15) * 2);
+    }
 
     cardRef.current.style.transform = `scale(${scale})`;
     cardRef.current.style.opacity = opacity;
     
-    if (distanceToCenter > 0.3) {
-      cardRef.current.style.filter = `blur(${distanceToCenter * 5}px) contrast(1.2)`;
+    // Blur only activates when it's further away
+    if (distanceToCenter > 0.25) {
+      cardRef.current.style.filter = `blur(${(distanceToCenter - 0.25) * 8}px) contrast(1.2)`;
       cardRef.current.style.pointerEvents = 'none';
     } else {
       cardRef.current.style.filter = 'none';
@@ -124,7 +130,7 @@ const CarouselItem = ({ index, position, rotation, project, groupRef, angleStep 
       <Html 
         transform 
         center 
-        distanceFactor={5}
+        distanceFactor={3.5}
         zIndexRange={[100, 0]}
       >
         <div style={{ pointerEvents: 'auto' }}>
