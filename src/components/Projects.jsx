@@ -44,7 +44,7 @@ const ProjectCard = React.forwardRef(({ project, idx, isMobile }, ref) => {
   return (
     <div 
       ref={ref} 
-      className={`w-full md:w-[380px] bento-card p-4 md:p-6 bg-voidBlack/70 border-2 transition-all duration-300 flex flex-col relative overflow-hidden group backdrop-blur-3xl rounded-2xl ${project.highlight ? 'border-neonPurple shadow-[0_0_40px_rgba(176,38,255,0.4)]' : 'border-cyberCyan/40 shadow-[0_0_20px_rgba(0,243,255,0.15)]'}`}
+      className={`w-full md:w-[380px] bento-card p-4 md:p-6 bg-voidBlack/95 border-2 flex flex-col relative overflow-hidden group backdrop-blur-3xl rounded-2xl ${project.highlight ? 'border-neonPurple shadow-[0_0_40px_rgba(176,38,255,0.4)]' : 'border-cyberCyan/40 shadow-[0_0_20px_rgba(0,243,255,0.15)]'}`}
       style={{ transformOrigin: 'center center' }}
     >
       {/* Tech Scanners overlay */}
