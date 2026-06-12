@@ -118,7 +118,7 @@ const DonateModal = ({ isOpen, onClose }) => {
       {/* Modal Content */}
       <div 
         ref={modalContentRef} 
-        className="relative z-10 w-full max-w-md bg-glassBg border border-cyberCyan/30 shadow-[0_0_50px_rgba(176,38,255,0.2)] rounded-3xl p-6 md:p-8 text-center"
+        className="relative z-10 w-full max-w-lg bg-glassBg border border-cyberCyan/30 shadow-[0_0_50px_rgba(176,38,255,0.2)] rounded-3xl p-6 md:p-8 text-center"
       >
         <button 
           onClick={onClose}
@@ -136,13 +136,13 @@ const DonateModal = ({ isOpen, onClose }) => {
         </p>
 
         {/* QR Code Container with Neon Trace */}
-        <div className="relative inline-block rounded-2xl overflow-hidden p-1 bg-gradient-to-br from-neonPurple via-voidBlack to-cyberCyan animate-pulse">
-          <div className="bg-voidBlack rounded-xl p-3 md:p-4 relative">
+        <div className="relative inline-block rounded-3xl overflow-hidden p-[2px] bg-gradient-to-br from-neonPurple via-voidBlack to-cyberCyan animate-pulse">
+          <div className="bg-voidBlack rounded-[22px] p-4 md:p-6 relative">
             <img 
               src="/qr-donate.png" 
               alt="Donate QR Code" 
-              className="w-40 h-40 md:w-48 md:h-48 object-contain rounded-lg relative z-10"
-              onError={(e) => { e.target.src = 'https://via.placeholder.com/200?text=QR+Code' }}
+              className="w-56 h-56 md:w-80 md:h-80 object-contain rounded-xl relative z-10"
+              onError={(e) => { e.target.src = 'https://via.placeholder.com/300?text=QR+Code' }}
             />
           </div>
         </div>
