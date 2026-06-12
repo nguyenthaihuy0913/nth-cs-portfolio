@@ -11,7 +11,7 @@ Welcome to my personal portfolio! This project is a premium, high-performance Si
 ![Portfolio Preview](https://via.placeholder.com/1200x600/050511/00f3ff?text=AI+Cyber+Portfolio)
 
 ### 🚀 Live Demo
-*(Deploying on Vercel... Replace this with your Live Vercel Link)*
+*https://nth-cs-portfolio.vercel.app/*
 
 ### 🛠️ Tech Stack Arsenal
 - **Languages:** Python, C, C++, JavaScript/Node.js
@@ -65,7 +65,7 @@ Chào mừng bạn đến với trang Portfolio cá nhân của tôi! Đây là 
 ![Portfolio Preview](https://via.placeholder.com/1200x600/050511/00f3ff?text=AI+Cyber+Portfolio)
 
 ### 🚀 Xem Trực Tiếp (Live Demo)
-*(Đang cập nhật link Vercel... Bạn có thể thay link Vercel của mình vào đây)*
+*https://nth-cs-portfolio.vercel.app/*
 
 ### 🛠️ Kho Vũ Khí Công Nghệ (Tech Stack)
 - **Ngôn ngữ lập trình:** Python, C, C++, JavaScript/Node.js
