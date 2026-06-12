@@ -1,10 +1,10 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { 
   FaSteam, FaXbox, FaTiktok, FaDiscord, 
   FaFacebook, FaGithub, FaYoutube, FaEnvelope,
-  FaSpotify, FaSoundcloud
+  FaSpotify, FaSoundcloud, FaTimes
 } from 'react-icons/fa';
 
 const socials = [
@@ -90,35 +90,119 @@ const MagneticSocial = ({ item }) => {
   );
 };
 
-const Footer = () => {
+const DonateModal = ({ isOpen, onClose }) => {
+  const modalOverlayRef = useRef(null);
+  const modalContentRef = useRef(null);
+
+  useGSAP(() => {
+    if (isOpen) {
+      gsap.to(modalOverlayRef.current, { autoAlpha: 1, duration: 0.3 });
+      gsap.fromTo(modalContentRef.current, 
+        { scale: 0.8, autoAlpha: 0 },
+        { scale: 1, autoAlpha: 1, duration: 0.5, ease: "back.out(1.7)" }
+      );
+    } else {
+      gsap.to(modalOverlayRef.current, { autoAlpha: 0, duration: 0.3 });
+      gsap.to(modalContentRef.current, { scale: 0.8, autoAlpha: 0, duration: 0.2 });
+    }
+  }, [isOpen]);
+
   return (
-    <footer className="relative w-full py-40 px-6 md:px-12 z-10 border-t border-glassBorder/50 overflow-hidden">
+    <div 
+      ref={modalOverlayRef} 
+      className="fixed inset-0 z-[9999] flex items-center justify-center bg-voidBlack/80 backdrop-blur-md invisible opacity-0"
+    >
+      {/* Click overlay to close */}
+      <div className="absolute inset-0 cursor-pointer" onClick={onClose}></div>
       
-      {/* Background Cyber Glow for Footer */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-[300px] bg-neonPurple/10 blur-[150px] pointer-events-none" />
+      {/* Modal Content */}
+      <div 
+        ref={modalContentRef} 
+        className="relative z-10 w-full max-w-md bg-glassBg border border-cyberCyan/30 shadow-[0_0_50px_rgba(176,38,255,0.2)] rounded-3xl p-8 text-center"
+      >
+        <button 
+          onClick={onClose}
+          data-cursor="hover"
+          className="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors p-2"
+        >
+          <FaTimes size={24} />
+        </button>
 
-      <div className="max-w-7xl mx-auto flex flex-col items-center">
-        
-        <h2 className="text-[12vw] md:text-[8vw] font-black leading-none mb-24 text-center tracking-tighter" style={{ WebkitTextStroke: '1px rgba(255,255,255,0.2)', color: 'transparent', backgroundImage: 'linear-gradient(to bottom, #fff, #b026ff)', WebkitBackgroundClip: 'text' }}>
-          LET'S CONNECT
-        </h2>
+        <h3 className="text-2xl font-black text-white mb-2 tracking-widest uppercase">
+          INITIALIZE <span className="text-neonPurple">SUPPORT</span>
+        </h3>
+        <p className="text-gray-300 text-sm mb-8 leading-relaxed">
+          Cảm ơn bạn đã ủng hộ để mình duy trì server và phát triển thêm nhiều dự án xịn xò hơn! 🚀
+        </p>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 w-full">
-          {socials.map((item, idx) => (
-            <MagneticSocial key={idx} item={item} />
-          ))}
-        </div>
-
-        <div className="mt-40 text-center flex flex-col items-center">
-          <div className="w-10 h-10 border border-cyberCyan/50 rounded-full flex items-center justify-center mb-4 animate-pulse">
-            <div className="w-2 h-2 bg-cyberCyan rounded-full" />
+        {/* QR Code Container with Neon Trace */}
+        <div className="relative inline-block rounded-2xl overflow-hidden p-1 bg-gradient-to-br from-neonPurple via-voidBlack to-cyberCyan animate-pulse">
+          <div className="bg-voidBlack rounded-xl p-4 relative">
+            <img 
+              src="/qr-donate.png" 
+              alt="Donate QR Code" 
+              className="w-48 h-48 object-contain rounded-lg relative z-10"
+              onError={(e) => { e.target.src = 'https://via.placeholder.com/200?text=QR+Code' }}
+            />
           </div>
-          <p className="text-gray-500 font-mono text-sm tracking-widest uppercase">
-            System Shutdown // © {new Date().getFullYear()} Nguyễn Thái Huy.
-          </p>
         </div>
+        
+        <p className="mt-6 text-xs text-cyberCyan font-mono tracking-widest uppercase opacity-70">
+          Awaiting Transaction...
+        </p>
       </div>
-    </footer>
+    </div>
+  );
+};
+
+const Footer = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  return (
+    <>
+      <footer className="relative w-full py-40 px-6 md:px-12 z-10 border-t border-glassBorder/50 overflow-hidden">
+        
+        {/* Background Cyber Glow for Footer */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-[300px] bg-neonPurple/10 blur-[150px] pointer-events-none" />
+
+        <div className="max-w-7xl mx-auto flex flex-col items-center">
+          
+          <h2 className="text-[12vw] md:text-[8vw] font-black leading-none mb-24 text-center tracking-tighter" style={{ WebkitTextStroke: '1px rgba(255,255,255,0.2)', color: 'transparent', backgroundImage: 'linear-gradient(to bottom, #fff, #b026ff)', WebkitBackgroundClip: 'text' }}>
+            LET'S CONNECT
+          </h2>
+
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 w-full max-w-5xl">
+            {socials.map((item, idx) => (
+              <MagneticSocial key={idx} item={item} />
+            ))}
+          </div>
+
+          {/* Donate Button */}
+          <div className="mt-20">
+            <button
+              onClick={() => setIsModalOpen(true)}
+              data-cursor="hover"
+              className="px-10 py-5 bg-transparent border-2 border-neonPurple text-neonPurple font-black uppercase tracking-widest text-lg rounded-full relative overflow-hidden group hover:shadow-[0_0_40px_rgba(176,38,255,0.6)] transition-all duration-300"
+            >
+              <span className="relative z-10 group-hover:text-white transition-colors duration-300">Support My Server ☕</span>
+              <div className="absolute inset-0 bg-neonPurple transform scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-500 ease-out z-0 mix-blend-screen" />
+            </button>
+          </div>
+
+          <div className="mt-24 text-center flex flex-col items-center">
+            <div className="w-10 h-10 border border-cyberCyan/50 rounded-full flex items-center justify-center mb-4 animate-pulse">
+              <div className="w-2 h-2 bg-cyberCyan rounded-full" />
+            </div>
+            <p className="text-gray-500 font-mono text-sm tracking-widest uppercase">
+              System Shutdown // © {new Date().getFullYear()} Nguyễn Thái Huy.
+            </p>
+          </div>
+        </div>
+      </footer>
+
+      {/* Render Donate Modal */}
+      <DonateModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+    </>
   );
 };
 
