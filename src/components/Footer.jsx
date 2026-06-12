@@ -3,7 +3,8 @@ import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { 
   FaSteam, FaXbox, FaTiktok, FaDiscord, 
-  FaFacebook, FaGithub, FaYoutube, FaEnvelope 
+  FaFacebook, FaGithub, FaYoutube, FaEnvelope,
+  FaSpotify, FaSoundcloud
 } from 'react-icons/fa';
 
 const socials = [
@@ -15,6 +16,8 @@ const socials = [
   { name: 'TikTok', text: '@huygaycanh', icon: <FaTiktok size={40} />, href: 'https://tiktok.com/@huygaycanh', color: '#00f3ff' },
   { name: 'YouTube', text: '@thaihuy1207', icon: <FaYoutube size={40} />, href: 'https://youtube.com/@thaihuy1207', color: '#b026ff' },
   { name: 'Steam', text: '76561199227928416', icon: <FaSteam size={40} />, href: 'https://steamcommunity.com/profiles/76561199227928416', color: '#00f3ff' },
+  { name: 'Spotify', text: '31uamnm...', icon: <FaSpotify size={40} />, href: 'https://open.spotify.com/user/31uamnmghhe35th2bia6fmilwtoa', color: '#1DB954' },
+  { name: 'SoundCloud', text: 'huy-thai', icon: <FaSoundcloud size={40} />, href: 'https://soundcloud.com/huy-thai-553444968', color: '#ff5500' },
   { name: 'Xbox', text: 'Thaihuy0913', icon: <FaXbox size={40} />, href: '#', color: '#b026ff' },
 ];
 

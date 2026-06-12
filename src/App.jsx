@@ -7,6 +7,7 @@ import Hero from './components/Hero';
 import About from './components/About';
 import TechStack from './components/TechStack';
 import Projects from './components/Projects';
+import MusicVibes from './components/MusicVibes';
 import Footer from './components/Footer';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -27,6 +28,7 @@ function App() {
       <About />
       <TechStack />
       <Projects />
+      <MusicVibes />
       <Footer />
     </div>
   );
