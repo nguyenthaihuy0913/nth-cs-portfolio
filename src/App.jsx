@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
-import AiNeuralSparkIntro from './components/AiNeuralSparkIntro';
+import AiBrainMorphIntro from './components/AiBrainMorphIntro';
 import InteractiveBackground from './components/InteractiveBackground';
 import Hero from './components/Hero';
 import About from './components/About';
@@ -21,14 +21,13 @@ function App() {
   const handleIntroFinish = () => {
     setIntroState('exploded');
 
-    // Mờ dần lớp intro
+    // Mờ dần lớp intro rất nhanh (để lộ background) và huỷ sau 0.5s
     gsap.to(introWrapperRef.current, {
       autoAlpha: 0,
-      duration: 0.8,
-      ease: "power2.inOut",
+      duration: 0.5,
+      ease: "power2.out",
       onComplete: () => {
         setIntroState('finished');
-        // Refresh ScrollTrigger sau khi giao diện ổn định
         ScrollTrigger.refresh();
       }
     });
@@ -69,7 +68,7 @@ function App() {
       {/* Lớp Overlay Intro 3D */}
       {introState !== 'finished' && (
         <div ref={introWrapperRef} className="fixed inset-0 z-[9999] bg-black">
-          <AiNeuralSparkIntro onFinish={handleIntroFinish} />
+          <AiBrainMorphIntro onFinish={handleIntroFinish} />
         </div>
       )}
 
