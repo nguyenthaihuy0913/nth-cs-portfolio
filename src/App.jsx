@@ -90,7 +90,7 @@ function App() {
       {/* Giao diện chính của Portfolio */}
       <div 
         ref={mainContentRef} 
-        className="main-portfolio-content relative opacity-0"
+        className="main-portfolio-content relative z-10 opacity-0"
       >
         <Hero />
         <About />
