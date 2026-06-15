@@ -30,7 +30,7 @@ const AICore = () => {
   );
 };
 
-const Hero = () => {
+const Hero = ({ isReady }) => {
   const container = useRef(null);
   const nameRef = useRef(null);
   const avatarRef = useRef(null);
@@ -45,6 +45,8 @@ const Hero = () => {
       yoyo: true,
       repeat: -1
     });
+
+    if (!isReady) return;
 
     // Typography Reveal
     const splitName = new SplitText(nameRef.current, { type: 'chars' });
@@ -66,7 +68,7 @@ const Hero = () => {
     );
 
     return () => splitName.revert();
-  }, { scope: container });
+  }, { scope: container, dependencies: [isReady] });
 
   return (
     <section ref={container} className="relative z-10 w-full min-h-screen flex flex-col md:flex-row items-center px-6 md:px-20 pt-20">

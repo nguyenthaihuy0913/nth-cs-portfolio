@@ -41,7 +41,7 @@ function App() {
       y: 0, 
       duration: 1.2, 
       ease: "power3.out",
-      clearProps: "all", // Xóa TẤT CẢ inline style để ngăn xung đột với class CSS và ScrollTrigger
+      clearProps: "transform", // Chỉ xóa transform để không làm vỡ position: fixed của ghim, giữ lại opacity
       onComplete: () => {
         setIntroState('finished');
         ScrollTrigger.refresh();
@@ -96,7 +96,7 @@ function App() {
         ref={mainContentRef} 
         className="main-portfolio-content relative z-10"
       >
-        <Hero />
+        <Hero isReady={introState !== 'playing'} />
         <About />
         <TechStack />
         <Projects />
