@@ -21,16 +21,22 @@ function App() {
   const handleIntroFinish = () => {
     setIntroState('exploded');
 
-    // Mờ dần lớp intro rất nhanh (để lộ background) và huỷ sau 0.5s
+    // Mờ dần lớp intro rất nhanh (để lộ background)
     gsap.to(introWrapperRef.current, {
       autoAlpha: 0,
       duration: 0.5,
       ease: "power2.out",
-      onComplete: () => {
-        setIntroState('finished');
-        ScrollTrigger.refresh();
-      }
     });
+
+    // Đợi toàn bộ CSS transition trượt lên (1200ms) kết thúc
+    // Mới tháo bỏ trạng thái khoá cuộn (overflow-hidden) và refresh ScrollTrigger
+    setTimeout(() => {
+      setIntroState('finished');
+      // Đợi thêm 1 tick để React render xong DOM (gỡ class overflow)
+      setTimeout(() => {
+        ScrollTrigger.refresh();
+      }, 100);
+    }, 1200);
   };
 
   // Anti-Inspect & Selection Blocker
