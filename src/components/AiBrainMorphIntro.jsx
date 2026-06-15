@@ -155,8 +155,9 @@ const MorphingScene = ({ onFinish }) => {
       materialRef.current.uniforms.uTime.value = state.clock.elapsedTime;
     }
     if (pointsRef.current) {
-      // Xoay nhẹ toàn bộ khối mây
-      pointsRef.current.rotation.y = state.clock.elapsedTime * 0.1;
+      // Base rotation để nhìn bộ não ở góc nghiêng 3/4 (thấy rõ 2 bán cầu và độ dài)
+      pointsRef.current.rotation.y = Math.PI / 4 + state.clock.elapsedTime * 0.15;
+      pointsRef.current.rotation.x = Math.PI / 8; // Nghiêng xuống một chút
       pointsRef.current.rotation.z = Math.sin(state.clock.elapsedTime * 0.2) * 0.1;
     }
   });
