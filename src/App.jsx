@@ -18,13 +18,6 @@ function App() {
   const mainContentRef = useRef(null);
   const introWrapperRef = useRef(null);
 
-  useEffect(() => {
-    // Set trạng thái ban đầu an toàn bằng GSAP
-    if (mainContentRef.current) {
-      gsap.set(mainContentRef.current, { opacity: 0, y: 50 });
-    }
-  }, []);
-
   const handleIntroFinish = () => {
     setIntroState('exploded');
 
@@ -36,21 +29,22 @@ function App() {
     });
 
     // Trượt giao diện chính lên bằng GSAP
-    gsap.to(mainContentRef.current, { 
-      opacity: 1, 
-      y: 0, 
-      duration: 1.2, 
-      ease: "power3.out",
-      clearProps: "transform", // Chỉ xóa transform để không làm vỡ position: fixed của ghim, giữ lại opacity
-      onComplete: () => {
-        setIntroState('finished');
-        // Trì hoãn refresh 100ms để chờ React gỡ bỏ class 'h-screen' và 'overflow-hidden'
-        // ra khỏi thẻ div root, giúp ScrollTrigger lấy được chiều cao thật của trang.
-        setTimeout(() => {
-          ScrollTrigger.refresh();
-        }, 100);
+    gsap.fromTo(mainContentRef.current, 
+      { opacity: 0, y: 50 },
+      { 
+        opacity: 1, 
+        y: 0, 
+        duration: 1.2, 
+        ease: "power3.out",
+        onComplete: () => {
+          setIntroState('finished');
+          // Chờ một frame để React cập nhật DOM
+          requestAnimationFrame(() => {
+            ScrollTrigger.refresh();
+          });
+        }
       }
-    });
+    );
   };
 
   // Anti-Inspect & Selection Blocker

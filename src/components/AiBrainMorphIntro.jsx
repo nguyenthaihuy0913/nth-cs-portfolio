@@ -19,43 +19,76 @@ const MorphingScene = ({ onFinish }) => {
 
     for (let i = 0; i < numPoints; i++) {
       // --- BIOLOGICAL BRAIN (posA) ---
-      // Distribute in a sphere
+      // Distribute in a sphere, but push more points to the surface to define the shape clearly
       const u = Math.random();
       const v = Math.random();
       const theta = u * 2.0 * Math.PI;
       const phi = Math.acos(2.0 * v - 1.0);
-      const r = Math.cbrt(Math.random()) * 4.5; 
+      
+      const r_norm = Math.pow(Math.random(), 0.3); // 0.0 -> 1.0, tập trung ở rìa (bề mặt)
+      const r = r_norm * 4.0;
 
-      // Tỉ lệ cơ bản của não người
+      // Trục tọa độ: X (trái/phải), Y (trên/dưới), Z (trước/sau)
       let ax = r * Math.sin(phi) * Math.cos(theta);
       let ay = r * Math.sin(phi) * Math.sin(theta);
       let az = r * Math.cos(phi);
 
-      // Chiều dài Z lớn nhất, Y dẹp
-      az *= 1.4; 
-      ay *= 0.9;
-      ax *= 1.0;
+      // 1. Tỉ lệ cơ bản: Dài ra trước sau, hẹp hai bên
+      az *= 1.45; // Chiều dài 
+      ax *= 0.85; // Bề ngang
+      ay *= 0.95; // Chiều cao
 
-      // Làm thon phần trán (Z < 0)
-      if (az < 0) {
-         ax *= (1.0 + az * 0.1); 
+      // 2. Tách cấu trúc: Đại não (Cerebrum) và Tiểu não (Cerebellum)
+      if (Math.random() < 0.15) {
+        // --- TIỂU NÃO (Cerebellum) ---
+        // Nằm ở phía dưới, đằng sau
+        ax *= 0.7;
+        ay = (ay * 0.4) - 2.2; 
+        az = (az * 0.5) + 2.5; 
+        
+        // Nếp nhăn tiểu não thường là các sọc ngang song song
+        const cerebellumFolds = Math.sin(ay * 15.0) * 0.1;
+        ax += cerebellumFolds * (ax / r);
+        az += cerebellumFolds * (az / r);
+        
+      } else {
+        // --- ĐẠI NÃO (Cerebrum) ---
+        // Thùy não (Lobe shaping)
+        if (az < 0) {
+          // Thùy trán (Frontal): dốc xuống và hẹp
+          ax *= (1.0 + az * 0.15); 
+          ay *= (1.0 + az * 0.05); 
+        } else {
+          // Thùy chẩm (Occipital): cong tròn đằng sau
+          ax *= (1.0 + az * 0.05);
+        }
+
+        if (ay < 0) {
+          // Làm phẳng đáy đại não
+          ay *= 0.6; 
+          // Thùy thái dương (Temporal): phình ra 2 bên hông
+          if (az > -1.0 && az < 2.0) {
+             ax *= 1.2; 
+          }
+        }
+
+        // Khe nứt dọc giữa 2 bán cầu (Longitudinal Fissure)
+        const absX = Math.abs(ax);
+        const gapStrength = Math.max(0, 0.4 - absX) * (ay > -1.0 ? 1.0 : 0.0);
+        if (ax > 0) ax += 0.25 + gapStrength;
+        else ax -= 0.25 + gapStrength;
+
+        // Tạo nếp nhăn bề mặt (Gyri & Sulci)
+        if (r_norm > 0.5) {
+          const foldPattern = Math.sin(ax * 4.0 + Math.sin(az * 4.0)) * Math.cos(ay * 4.0 + Math.cos(ax * 4.0));
+          const foldDepth = 0.4 * ((r_norm - 0.5) / 0.5); 
+          
+          const len = Math.sqrt(ax*ax + ay*ay + az*az);
+          ax += (ax / len) * foldPattern * foldDepth;
+          ay += (ay / len) * foldPattern * foldDepth;
+          az += (az / len) * foldPattern * foldDepth;
+        }
       }
-
-      // Làm phẳng đáy não (Y < 0)
-      if (ay < 0) {
-         ay *= 0.5;
-      }
-
-      // Tách 2 bán cầu: khoảng hở rõ nhất ở trên đỉnh (Y > 0)
-      let gap = 0.15 + (ay > 0 ? ay * 0.1 : 0);
-      if (ax > 0.01) ax += gap;
-      else if (ax < -0.01) ax -= gap;
-
-      // Nếp nhăn: tần số vừa phải, biên độ nhỏ để giữ form não
-      const fold = Math.sin(ax * 2.5) * Math.cos(ay * 2.5) * Math.sin(az * 2.5) * 0.4;
-      ax += fold;
-      ay += fold;
-      az += fold;
 
       posA[i * 3] = ax;
       posA[i * 3 + 1] = ay;
@@ -167,9 +200,9 @@ const MorphingScene = ({ onFinish }) => {
       materialRef.current.uniforms.uTime.value = state.clock.elapsedTime;
     }
     if (pointsRef.current) {
-      // Nhìn bộ não trực diện từ ngang hông (Profile view) để nhận diện rõ nhất
-      pointsRef.current.rotation.y = Math.PI / 2.2 + state.clock.elapsedTime * 0.1;
-      pointsRef.current.rotation.x = Math.PI / 12; // Nghiêng nhẹ xuống
+      // Nhìn từ góc ngang sườn (Side profile) để khoe rõ hình dáng não và phần tiểu não đặc trưng
+      pointsRef.current.rotation.y = Math.PI / 2 + state.clock.elapsedTime * 0.15;
+      pointsRef.current.rotation.x = 0; // Để thẳng góc
       pointsRef.current.rotation.z = Math.sin(state.clock.elapsedTime * 0.2) * 0.05;
     }
   });
