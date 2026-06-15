@@ -18,15 +18,19 @@ function App() {
   const mainContentRef = useRef(null);
   const introWrapperRef = useRef(null);
 
-  const handleIntroExplode = () => {
+  const handleIntroFinish = () => {
     setIntroState('exploded');
     
-    // Trượt giao diện chính lên
-    gsap.to(mainContentRef.current, {
-      y: 0,
-      duration: 1.2,
-      ease: "power4.out",
-    });
+    // Giao diện chính hiện ra mượt mà (Fade In & Slide Up nhẹ)
+    gsap.fromTo(mainContentRef.current, 
+      { opacity: 0, y: 50 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 1.2,
+        ease: "power3.out",
+      }
+    );
 
     // Mờ dần lớp intro
     gsap.to(introWrapperRef.current, {
@@ -76,15 +80,14 @@ function App() {
       {/* Lớp Overlay Intro 3D */}
       {introState !== 'finished' && (
         <div ref={introWrapperRef} className="fixed inset-0 z-[9999] bg-black">
-          <AiNeuralSparkIntro onExplode={handleIntroExplode} />
+          <AiNeuralSparkIntro onFinish={handleIntroFinish} />
         </div>
       )}
 
       {/* Giao diện chính của Portfolio */}
       <div 
         ref={mainContentRef} 
-        className="main-portfolio-content relative"
-        style={{ transform: 'translateY(100vh)' }}
+        className="main-portfolio-content relative opacity-0"
       >
         <InteractiveBackground />
         <Hero />
