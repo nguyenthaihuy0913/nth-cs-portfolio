@@ -44,7 +44,11 @@ function App() {
       clearProps: "transform", // Chỉ xóa transform để không làm vỡ position: fixed của ghim, giữ lại opacity
       onComplete: () => {
         setIntroState('finished');
-        ScrollTrigger.refresh();
+        // Trì hoãn refresh 100ms để chờ React gỡ bỏ class 'h-screen' và 'overflow-hidden'
+        // ra khỏi thẻ div root, giúp ScrollTrigger lấy được chiều cao thật của trang.
+        setTimeout(() => {
+          ScrollTrigger.refresh();
+        }, 100);
       }
     });
   };
