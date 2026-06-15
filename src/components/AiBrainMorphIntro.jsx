@@ -26,21 +26,33 @@ const MorphingScene = ({ onFinish }) => {
       const phi = Math.acos(2.0 * v - 1.0);
       const r = Math.cbrt(Math.random()) * 4.5; 
 
+      // Tỉ lệ cơ bản của não người
       let ax = r * Math.sin(phi) * Math.cos(theta);
       let ay = r * Math.sin(phi) * Math.sin(theta);
       let az = r * Math.cos(phi);
 
-      // Squish into brain shape
-      ay *= 0.8;
-      az *= 1.1;
-      ax *= 0.85;
+      // Chiều dài Z lớn nhất, Y dẹp
+      az *= 1.4; 
+      ay *= 0.9;
+      ax *= 1.0;
 
-      // Split hemispheres
-      if (ax > 0) ax += 0.3;
-      else ax -= 0.3;
+      // Làm thon phần trán (Z < 0)
+      if (az < 0) {
+         ax *= (1.0 + az * 0.1); 
+      }
 
-      // Add folds (noise)
-      const fold = Math.sin(ax * 3.0) * Math.cos(ay * 3.0) * Math.sin(az * 3.0) * 0.5;
+      // Làm phẳng đáy não (Y < 0)
+      if (ay < 0) {
+         ay *= 0.5;
+      }
+
+      // Tách 2 bán cầu: khoảng hở rõ nhất ở trên đỉnh (Y > 0)
+      let gap = 0.15 + (ay > 0 ? ay * 0.1 : 0);
+      if (ax > 0.01) ax += gap;
+      else if (ax < -0.01) ax -= gap;
+
+      // Nếp nhăn: tần số vừa phải, biên độ nhỏ để giữ form não
+      const fold = Math.sin(ax * 2.5) * Math.cos(ay * 2.5) * Math.sin(az * 2.5) * 0.4;
       ax += fold;
       ay += fold;
       az += fold;
@@ -155,10 +167,10 @@ const MorphingScene = ({ onFinish }) => {
       materialRef.current.uniforms.uTime.value = state.clock.elapsedTime;
     }
     if (pointsRef.current) {
-      // Base rotation để nhìn bộ não ở góc nghiêng 3/4 (thấy rõ 2 bán cầu và độ dài)
-      pointsRef.current.rotation.y = Math.PI / 4 + state.clock.elapsedTime * 0.15;
-      pointsRef.current.rotation.x = Math.PI / 8; // Nghiêng xuống một chút
-      pointsRef.current.rotation.z = Math.sin(state.clock.elapsedTime * 0.2) * 0.1;
+      // Nhìn bộ não trực diện từ ngang hông (Profile view) để nhận diện rõ nhất
+      pointsRef.current.rotation.y = Math.PI / 2.2 + state.clock.elapsedTime * 0.1;
+      pointsRef.current.rotation.x = Math.PI / 12; // Nghiêng nhẹ xuống
+      pointsRef.current.rotation.z = Math.sin(state.clock.elapsedTime * 0.2) * 0.05;
     }
   });
 

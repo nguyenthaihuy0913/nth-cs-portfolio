@@ -21,22 +21,28 @@ function App() {
   const handleIntroFinish = () => {
     setIntroState('exploded');
 
-    // Mờ dần lớp intro rất nhanh (để lộ background)
+    // Mờ dần lớp intro
     gsap.to(introWrapperRef.current, {
       autoAlpha: 0,
       duration: 0.5,
       ease: "power2.out",
     });
 
-    // Đợi toàn bộ CSS transition trượt lên (1200ms) kết thúc
-    // Mới tháo bỏ trạng thái khoá cuộn (overflow-hidden) và refresh ScrollTrigger
-    setTimeout(() => {
-      setIntroState('finished');
-      // Đợi thêm 1 tick để React render xong DOM (gỡ class overflow)
-      setTimeout(() => {
-        ScrollTrigger.refresh();
-      }, 100);
-    }, 1200);
+    // Trượt giao diện chính lên bằng GSAP
+    gsap.fromTo(mainContentRef.current, 
+      { opacity: 0, y: 50 },
+      { 
+        opacity: 1, 
+        y: 0, 
+        duration: 1.2, 
+        ease: "power3.out",
+        clearProps: "transform", // Cực kỳ quan trọng: Xóa transform sau khi chạy xong để không làm vỡ position: fixed của ghim
+        onComplete: () => {
+          setIntroState('finished');
+          ScrollTrigger.refresh();
+        }
+      }
+    );
   };
 
   // Anti-Inspect & Selection Blocker
@@ -84,7 +90,7 @@ function App() {
       {/* Giao diện chính của Portfolio */}
       <div 
         ref={mainContentRef} 
-        className={`main-portfolio-content relative transition-all duration-[1200ms] ease-out ${introState !== 'playing' ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}
+        className="main-portfolio-content relative opacity-0"
       >
         <Hero />
         <About />
