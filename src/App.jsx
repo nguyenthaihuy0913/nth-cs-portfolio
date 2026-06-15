@@ -18,6 +18,13 @@ function App() {
   const mainContentRef = useRef(null);
   const introWrapperRef = useRef(null);
 
+  useEffect(() => {
+    // Set trạng thái ban đầu an toàn bằng GSAP
+    if (mainContentRef.current) {
+      gsap.set(mainContentRef.current, { opacity: 0, y: 50 });
+    }
+  }, []);
+
   const handleIntroFinish = () => {
     setIntroState('exploded');
 
@@ -29,20 +36,17 @@ function App() {
     });
 
     // Trượt giao diện chính lên bằng GSAP
-    gsap.fromTo(mainContentRef.current, 
-      { opacity: 0, y: 50 },
-      { 
-        opacity: 1, 
-        y: 0, 
-        duration: 1.2, 
-        ease: "power3.out",
-        clearProps: "transform", // Cực kỳ quan trọng: Xóa transform sau khi chạy xong để không làm vỡ position: fixed của ghim
-        onComplete: () => {
-          setIntroState('finished');
-          ScrollTrigger.refresh();
-        }
+    gsap.to(mainContentRef.current, { 
+      opacity: 1, 
+      y: 0, 
+      duration: 1.2, 
+      ease: "power3.out",
+      clearProps: "all", // Xóa TẤT CẢ inline style để ngăn xung đột với class CSS và ScrollTrigger
+      onComplete: () => {
+        setIntroState('finished');
+        ScrollTrigger.refresh();
       }
-    );
+    });
   };
 
   // Anti-Inspect & Selection Blocker
@@ -90,7 +94,7 @@ function App() {
       {/* Giao diện chính của Portfolio */}
       <div 
         ref={mainContentRef} 
-        className="main-portfolio-content relative z-10 opacity-0"
+        className="main-portfolio-content relative z-10"
       >
         <Hero />
         <About />
