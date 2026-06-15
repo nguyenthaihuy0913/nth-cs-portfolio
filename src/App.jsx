@@ -20,17 +20,6 @@ function App() {
 
   const handleIntroFinish = () => {
     setIntroState('exploded');
-    
-    // Giao diện chính hiện ra mượt mà (Fade In & Slide Up nhẹ)
-    gsap.fromTo(mainContentRef.current, 
-      { opacity: 0, y: 50 },
-      {
-        opacity: 1,
-        y: 0,
-        duration: 1.2,
-        ease: "power3.out",
-      }
-    );
 
     // Mờ dần lớp intro
     gsap.to(introWrapperRef.current, {
@@ -39,7 +28,7 @@ function App() {
       ease: "power2.inOut",
       onComplete: () => {
         setIntroState('finished');
-        // Refresh ScrollTrigger sau khi giao diện trượt lên và ổn định
+        // Refresh ScrollTrigger sau khi giao diện ổn định
         ScrollTrigger.refresh();
       }
     });
@@ -84,12 +73,14 @@ function App() {
         </div>
       )}
 
+      {/* Background tương tác độc lập (Không bị ảnh hưởng bởi transform) */}
+      <InteractiveBackground />
+
       {/* Giao diện chính của Portfolio */}
       <div 
         ref={mainContentRef} 
-        className="main-portfolio-content relative opacity-0"
+        className={`main-portfolio-content relative transition-all duration-[1200ms] ease-out ${introState !== 'playing' ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'}`}
       >
-        <InteractiveBackground />
         <Hero />
         <About />
         <TechStack />

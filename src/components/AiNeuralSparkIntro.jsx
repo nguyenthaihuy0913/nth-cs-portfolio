@@ -10,9 +10,10 @@ const NeuralScene = ({ onFinish }) => {
   const materialRef = useRef();
 
   const { positions } = useMemo(() => {
-    const numPoints = isMobile ? 500 : 1500;
+    // Tối ưu hoá số lượng points để tránh nghẽn CPU (lag) khi tính toán khoảng cách
+    const numPoints = isMobile ? 250 : 600;
     const maxDist = 20;
-    const connectDist = isMobile ? 3.5 : 2.5;
+    const connectDist = isMobile ? 4.5 : 3.5;
 
     const points = [];
     for (let i = 0; i < numPoints; i++) {
