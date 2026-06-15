@@ -1,7 +1,8 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
+import AiNeuralSparkIntro from './components/AiNeuralSparkIntro';
 import InteractiveBackground from './components/InteractiveBackground';
 import Hero from './components/Hero';
 import About from './components/About';
@@ -13,6 +14,33 @@ import Footer from './components/Footer';
 gsap.registerPlugin(ScrollTrigger);
 
 function App() {
+  const [introState, setIntroState] = useState('playing'); // 'playing', 'exploded', 'finished'
+  const mainContentRef = useRef(null);
+  const introWrapperRef = useRef(null);
+
+  const handleIntroExplode = () => {
+    setIntroState('exploded');
+    
+    // Trượt giao diện chính lên
+    gsap.to(mainContentRef.current, {
+      y: 0,
+      duration: 1.2,
+      ease: "power4.out",
+    });
+
+    // Mờ dần lớp intro
+    gsap.to(introWrapperRef.current, {
+      autoAlpha: 0,
+      duration: 0.8,
+      ease: "power2.inOut",
+      onComplete: () => {
+        setIntroState('finished');
+        // Refresh ScrollTrigger sau khi giao diện trượt lên và ổn định
+        ScrollTrigger.refresh();
+      }
+    });
+  };
+
   // Anti-Inspect & Selection Blocker
   useEffect(() => {
     const handleContextMenu = (e) => e.preventDefault();
@@ -42,23 +70,31 @@ function App() {
     };
   }, []);
 
-  useEffect(() => {
-    // Refresh ScrollTrigger to ensure pinned elements are perfectly calculated
-    const timeout = setTimeout(() => {
-      ScrollTrigger.refresh();
-    }, 100);
-    return () => clearTimeout(timeout);
-  }, []);
-
   return (
-    <div className="w-full bg-voidBlack text-white selection:bg-cyberCyan/30 min-h-screen font-sans relative">
-      <InteractiveBackground />
-      <Hero />
-      <About />
-      <TechStack />
-      <Projects />
-      <MusicVibes />
-      <Footer />
+    <div className={`w-full bg-voidBlack text-white selection:bg-cyberCyan/30 min-h-screen font-sans relative ${introState !== 'finished' ? 'overflow-hidden h-screen' : ''}`}>
+      
+      {/* Lớp Overlay Intro 3D */}
+      {introState !== 'finished' && (
+        <div ref={introWrapperRef} className="fixed inset-0 z-[9999] bg-black">
+          <AiNeuralSparkIntro onExplode={handleIntroExplode} />
+        </div>
+      )}
+
+      {/* Giao diện chính của Portfolio */}
+      <div 
+        ref={mainContentRef} 
+        className="main-portfolio-content relative"
+        style={{ transform: 'translateY(100vh)' }}
+      >
+        <InteractiveBackground />
+        <Hero />
+        <About />
+        <TechStack />
+        <Projects />
+        <MusicVibes />
+        <Footer />
+      </div>
+
     </div>
   );
 }
