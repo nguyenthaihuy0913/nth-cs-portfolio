@@ -14,18 +14,20 @@ import Footer from './components/Footer';
 gsap.registerPlugin(ScrollTrigger);
 
 function App() {
-  const [introState, setIntroState] = useState('playing'); // 'playing', 'exploded', 'finished'
+  // Kiểm tra thiết bị mobile ngay lần đầu (width < 768px)
+  const isMobileInitial = window.innerWidth < 768;
+  const [introState, setIntroState] = useState(isMobileInitial ? 'finished' : 'playing'); // 'playing', 'exploded', 'finished'
   const mainContentRef = useRef(null);
   const introWrapperRef = useRef(null);
 
   const handleIntroFinish = () => {
     setIntroState('exploded');
 
-    // Mờ dần lớp intro
+    // Mờ dần lớp nền đen của intro (cross-fade mượt mà với shader)
     gsap.to(introWrapperRef.current, {
       autoAlpha: 0,
-      duration: 0.5,
-      ease: "power2.out",
+      duration: 0.8,
+      ease: "power2.inOut",
     });
 
     // Trượt giao diện chính lên bằng GSAP
