@@ -34,7 +34,7 @@ const row2 = [
 const TechItem = ({ item }) => {
   if (item.highlight) {
     return (
-      <div className="flex items-center gap-2 md:gap-4 px-6 py-4 md:px-10 md:py-6 mx-2 md:mx-4 rounded-3xl border-2 border-neonPurple bg-neonPurple/10 shadow-[0_0_30px_rgba(176,38,255,0.4)] animate-pulse shrink-0">
+      <div className="flex items-center gap-2 md:gap-4 px-6 py-4 md:px-10 md:py-6 mx-4 md:mx-6 rounded-3xl border-2 border-neonPurple bg-neonPurple/10 shadow-[0_0_30px_rgba(176,38,255,0.4)] animate-pulse shrink-0">
         <div className="text-4xl md:text-6xl text-neonPurple drop-shadow-[0_0_15px_rgba(176,38,255,0.8)]">
           {item.icon}
         </div>
@@ -46,7 +46,7 @@ const TechItem = ({ item }) => {
   }
 
   return (
-    <div className="flex items-center gap-2 md:gap-3 px-5 py-3 md:px-8 md:py-5 mx-2 md:mx-4 rounded-2xl border border-glassBorder bg-glassBg backdrop-blur-md shrink-0 transition-colors hover:border-cyberCyan/50 hover:bg-cyberCyan/5">
+    <div className="flex items-center gap-2 md:gap-3 px-5 py-3 md:px-8 md:py-5 mx-4 md:mx-6 rounded-2xl border border-glassBorder bg-glassBg backdrop-blur-md shrink-0 transition-colors hover:border-cyberCyan/50 hover:bg-cyberCyan/5">
       <div className="text-2xl md:text-4xl text-cyberCyan opacity-80">
         {item.icon}
       </div>
@@ -121,7 +121,7 @@ const TechStack = () => {
         
         <div ref={row1Ref} className="flex items-center w-max">
           {[...Array(4)].map((_, i) => (
-            <div key={i} className="flex items-center">
+            <div key={i} className="flex items-center shrink-0">
               {row1.map((item, idx) => <TechItem key={`${i}-${idx}`} item={item} />)}
             </div>
           ))}
@@ -135,7 +135,7 @@ const TechStack = () => {
         
         <div ref={row2Ref} className="flex items-center w-max">
           {[...Array(4)].map((_, i) => (
-            <div key={i} className="flex items-center">
+            <div key={i} className="flex items-center shrink-0">
               {row2.map((item, idx) => <TechItem key={`${i}-${idx}`} item={item} />)}
             </div>
           ))}
