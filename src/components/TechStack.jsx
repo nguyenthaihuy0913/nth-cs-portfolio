@@ -63,23 +63,26 @@ const TechStack = () => {
   const row2Ref = useRef(null);
 
   useGSAP(() => {
-    // Duplicate content ensures smooth infinite loop
+    // Với 4 bản copy, 1 bản chiếm 25% tổng chiều dài.
+    // Dịch chuyển đúng 1 bản (-25%) rồi lặp lại để tạo hiệu ứng vô tận mượt mà.
     const tl1 = gsap.to(row1Ref.current, {
-      xPercent: -50,
+      xPercent: -25,
       ease: "none",
       duration: 20,
       repeat: -1,
     });
 
-    const tl2 = gsap.to(row2Ref.current, {
-      xPercent: 50,
-      ease: "none",
-      duration: 25,
-      repeat: -1,
-    });
-    
-    // We start row 2 shifted left so it can seamlessly move right
-    gsap.set(row2Ref.current, { xPercent: -50 });
+    // Row 2 chạy ngược lại (từ trái qua phải)
+    // Bắt đầu ở vị trí -25% (giấu 1 bản bên trái), chạy về 0%
+    const tl2 = gsap.fromTo(row2Ref.current, 
+      { xPercent: -25 },
+      {
+        xPercent: 0,
+        ease: "none",
+        duration: 25,
+        repeat: -1,
+      }
+    );
 
     const handleMouseEnter = () => {
       gsap.to([tl1, tl2], { timeScale: 0.2, duration: 1, ease: "power2.out" });
@@ -117,14 +120,11 @@ const TechStack = () => {
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-[100px] bg-cyberCyan/5 blur-[50px] pointer-events-none" />
         
         <div ref={row1Ref} className="flex items-center w-max">
-          {/* Original */}
-          <div className="flex items-center">
-            {row1.map((item, idx) => <TechItem key={idx} item={item} />)}
-          </div>
-          {/* Duplicated for infinite scroll */}
-          <div className="flex items-center">
-            {row1.map((item, idx) => <TechItem key={`dup-${idx}`} item={item} />)}
-          </div>
+          {[...Array(4)].map((_, i) => (
+            <div key={i} className="flex items-center">
+              {row1.map((item, idx) => <TechItem key={`${i}-${idx}`} item={item} />)}
+            </div>
+          ))}
         </div>
       </div>
 
@@ -134,14 +134,11 @@ const TechStack = () => {
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-[100px] bg-neonPurple/5 blur-[50px] pointer-events-none" />
         
         <div ref={row2Ref} className="flex items-center w-max">
-          {/* Original */}
-          <div className="flex items-center">
-            {row2.map((item, idx) => <TechItem key={idx} item={item} />)}
-          </div>
-          {/* Duplicated for infinite scroll */}
-          <div className="flex items-center">
-            {row2.map((item, idx) => <TechItem key={`dup-${idx}`} item={item} />)}
-          </div>
+          {[...Array(4)].map((_, i) => (
+            <div key={i} className="flex items-center">
+              {row2.map((item, idx) => <TechItem key={`${i}-${idx}`} item={item} />)}
+            </div>
+          ))}
         </div>
       </div>
       
