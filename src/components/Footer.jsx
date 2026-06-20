@@ -9,7 +9,7 @@ import {
 
 const socials = [
   { name: 'Email', text: 'thaihuyxbox@gmail.com', icon: <FaEnvelope size={40} />, href: 'mailto:thaihuyxbox@gmail.com', color: '#b026ff' },
-  { name: 'Discord', text: 'thaihuy1207', icon: <FaDiscord size={40} />, href: '#', color: '#00f3ff' },
+  { name: 'Discord', text: 'thaihuy1207', icon: <FaDiscord size={40} />, href: '#', copyText: 'thaihuy1207', color: '#00f3ff' },
   { name: 'Server Bot', text: 'discord.gg/6XeDqWcPWK', icon: <FaDiscord size={40} />, href: 'https://discord.gg/6XeDqWcPWK', color: '#b026ff' },
   { name: 'Facebook', text: 'huysimphutao', icon: <FaFacebook size={40} />, href: 'https://facebook.com/huysimphutao', color: '#00f3ff' },
   { name: 'GitHub', text: 'nguyenthaihuy0913', icon: <FaGithub size={40} />, href: 'https://github.com/nguyenthaihuy0913', color: '#b026ff' },
@@ -18,12 +18,13 @@ const socials = [
   { name: 'Steam', text: '76561199227928416', icon: <FaSteam size={40} />, href: 'https://steamcommunity.com/profiles/76561199227928416', color: '#00f3ff' },
   { name: 'Spotify', text: '31uamnm...', icon: <FaSpotify size={40} />, href: 'https://open.spotify.com/user/31uamnmghhe35th2bia6fmilwtoa', color: '#1DB954' },
   { name: 'SoundCloud', text: 'huy-thai', icon: <FaSoundcloud size={40} />, href: 'https://soundcloud.com/huy-thai-553444968', color: '#ff5500' },
-  { name: 'Xbox', text: 'Thaihuy0913', icon: <FaXbox size={40} />, href: '#', color: '#b026ff' },
+  { name: 'Xbox', text: 'Thaihuy0913', icon: <FaXbox size={40} />, href: 'https://www.xbox.com/en-US/play/user/Thaihuy0913', color: '#b026ff' },
 ];
 
 const MagneticSocial = ({ item }) => {
   const btnRef = useRef(null);
   const iconContentRef = useRef(null);
+  const [copied, setCopied] = useState(false);
 
   useGSAP(() => {
     const btn = btnRef.current;
@@ -68,13 +69,23 @@ const MagneticSocial = ({ item }) => {
     };
   }, []);
 
+  const handleClick = (e) => {
+    if (item.copyText) {
+      e.preventDefault();
+      navigator.clipboard.writeText(item.copyText);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    }
+  };
+
   return (
     <a 
       ref={btnRef}
       href={item.href}
-      target="_blank"
+      target={item.href === '#' ? '_self' : '_blank'}
       rel="noreferrer"
       data-cursor="hover"
+      onClick={handleClick}
       className="flex flex-col items-center justify-center p-4 md:p-8 rounded-3xl border border-glassBorder bg-glassBg backdrop-blur-xl transition-all h-[150px] md:h-[200px]"
     >
       <div ref={iconContentRef} className="flex flex-col items-center gap-3 md:gap-4 pointer-events-none">
@@ -82,7 +93,9 @@ const MagneticSocial = ({ item }) => {
           {item.icon}
         </div>
         <div className="text-center">
-          <p className="text-xs md:text-sm font-bold text-white mb-1">{item.name}</p>
+          <p className="text-xs md:text-sm font-bold text-white mb-1">
+            {copied ? <span className="text-green-400">Copied ID!</span> : item.name}
+          </p>
           <p className="text-[10px] md:text-xs font-mono text-gray-400 break-all max-w-[100px] md:max-w-[120px] leading-tight">{item.text}</p>
         </div>
       </div>
